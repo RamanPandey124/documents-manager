@@ -1,165 +1,187 @@
-interface documentSchema {
-    id: string;
-    name: string;
-    path: string;
-    contentType: "directory" | "file"
-}
+import { documentSchema } from "./types/tree";
 
 export const data: Array<documentSchema> = [
     {
         id: "1",
-        path: "",
+        path: ".next",
         name: ".next",
-        contentType: "directory"
+        contentType: "directory",
+        parent: "tree"
     },
     {
         id: "2",
-        path: "",
+        path: "node_modules",
         name: "node_modules",
-        contentType: "directory"
+        contentType: "directory",
+        parent: "tree"
     },
     {
         id: "3",
-        path: "",
+        path: "public",
         name: "public",
-        contentType: "directory"
+        contentType: "directory",
+        parent: "tree"
     },
     {
         id: "4",
-        path: "",
+        path: "src",
         name: "src",
-        contentType: "directory"
+        contentType: "directory",
+        parent: "tree"
     },
     {
         id: "4",
-        path: "",
+        path: ".eslintrc.json",
         name: ".eslintrc.json",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree"
     },
     {
         id: "5",
-        path: "",
+        path: ".gitignore",
         name: ".gitignore",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree"
     },
     {
         id: "6",
-        path: "",
+        path: "next-env.d.ts",
         name: "next-env.d.ts",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree"
     },
     {
         id: "7",
-        path: "",
+        path: "nextconfig.ts",
         name: "nextconfig.ts",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree"
     },
     {
         id: "8",
-        path: "",
+        path: "package.json",
         name: "package.json",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree"
     },
     {
         id: "9",
-        path: "/public",
+        path: "/public/next.svg",
         name: "next.svg",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree/public"
     },
     {
         id: "10",
-        path: "/public/",
+        path: "public/vercel.svg",
         name: "vercel.svg",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree/public"
     },
     {
         id: "11",
-        path: "/src",
+        path: "src/app",
         name: "app",
-        contentType: "directory"
+        contentType: "directory",
+        parent: "tree/src"
     },
     {
         id: "12",
-        path: "/src",
+        path: "src/components",
         name: "components",
-        contentType: "directory"
+        contentType: "directory",
+        parent: "tree/src"
     },
     {
         id: "13",
-        path: "/src",
+        path: "src/lib",
         name: "lib",
-        contentType: "directory"
+        contentType: "directory",
+        parent: "tree/src"
     },
     {
         id: "14",
-        path: "/src/app",
+        path: "src/app/tree",
         name: "tree",
-        contentType: "directory"
+        contentType: "directory",
+        parent: "tree/src/app"
+
     },
     {
         id: "15",
-        path: "/src/app",
+        path: "src/app/global.css",
         name: "global.css",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree/src/app"
     },
     {
         id: "15",
-        path: "/src/app",
+        path: "src/app/layout.tsx",
         name: "layout.tsx",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree/src/app"
     },
     {
         id: "16",
-        path: "/src/app/",
+        path: "src/app/page.tsx",
         name: "page.tsx",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree/src/app"
     },
     {
         id: "17",
-        path: "/src/app/tree",
+        path: "src/app/tree/page.tsx",
         name: "page.tsx",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree/src/app/tree"
     },
     {
         id: "18",
-        path: "/src/components",
+        path: "src/components/file.tsx",
         name: "file.tsx",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree/src/components"
     },
     {
         id: "19",
-        path: "/src/components",
+        path: "src/components/folder.tsx",
         name: "folder.tsx",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree/src/components"
     },
     {
         id: "20",
-        path: "/src/components",
+        path: "src/components/TreeExample.tsx",
         name: "TreeExample.tsx",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree/src/components"
     },
     {
         id: "21",
-        path: "/src/lib",
+        path: "src/lib/data.js",
         name: "data.js",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree/src/lib"
     },
     {
         id: "22",
-        path: "/src/app/tree",
+        path: "src/app/tree/git",
         name: "git",
-        contentType: "directory"
+        contentType: "directory",
+        parent: "tree/src/app/tree"
     },
     {
         id: "22",
-        path: "/src/app/tree",
+        path: "src/app/tree/sample",
         name: "sample",
-        contentType: "directory"
+        contentType: "directory",
+        parent: "tree/src/app/tree"
     },
     {
         id: "23",
-        path: "/src/app/tree/git",
+        path: "src/app/tree/git/layout.tsx",
         name: "layout.tsx",
-        contentType: "file"
+        contentType: "file",
+        parent: "tree/src/app/tree/git"
     },
 ]

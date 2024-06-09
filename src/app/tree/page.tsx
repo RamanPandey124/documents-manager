@@ -11,9 +11,11 @@ export default function tree() {
     )
 }
 
-const renderTree = (files: documentSchema[], path: string = "") => {
-    console.log(path)
-    const folderFiles = files.filter(file => file.path === path)
+const renderTree = (files: documentSchema[], path?: string) => {
+    const folderFiles = files.filter(file => {
+        path = path?.includes('/') ? path : file.path
+        return file.path === path
+    })
 
     return folderFiles.map(file => {
         if (file.contentType === "directory") {
