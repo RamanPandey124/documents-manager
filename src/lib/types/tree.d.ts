@@ -1,14 +1,14 @@
-
-export interface documentSchema {
+export interface fileSystemDocument {
     id: string;
     name: string;
     path: string;
     contentType: "directory" | "file",
     parent: string
 }
-
-export interface folderProps {
-    file: documentSchema;
-    renderTree: (files: documentSchema[], path: string = "/") => JSX.Element[]
-    files: documentSchema[];
+export interface folderContentProps {
+    file: fileSystemDocument;
+    renderTree: (path: string) => Promise<JSX.Element[]>
+}
+export interface FileContentProps {
+    file: fileSystemDocument;
 }
