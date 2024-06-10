@@ -12,3 +12,12 @@ export interface folderContentProps {
 export interface FileContentProps {
     file: fileSystemDocument;
 }
+
+export interface hierarchyDocument {
+    _id: string;
+    name: string;
+    path: string;
+    contentType: 'directory' | "files";
+    createdAt: Date;
+    updatedAt: Date;
+}
