@@ -1,10 +1,11 @@
 "use client"
-import FolderArchitect from "@/components/reuseable/FolderArchitect";
-import Modal from "@/components/reuseable/Modal";
-import { useState } from "react";
-import { MdAddToPhotos } from "react-icons/md";
 
-export default function CreateTree({ path }: { path: string }) {
+import { useState } from "react"
+import { MdAddToPhotos } from "react-icons/md"
+import Modal from "../reuseable/Modal"
+import ResourceFormModal from "./ResourceFormModal"
+
+export default function CreateNewResource() {
     const [isModal, setIsModal] = useState(false)
 
     const handleModal = () => {
@@ -22,7 +23,7 @@ export default function CreateTree({ path }: { path: string }) {
             </div>
 
             <Modal isModal={isModal} handleModal={handleModal}>
-                <FolderArchitect path={path} handleModal={handleModal}/>
+                <ResourceFormModal handleModal={handleModal} />
             </Modal>
 
         </div>

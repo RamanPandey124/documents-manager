@@ -1,0 +1,156 @@
+[
+  {
+    "_id": {
+      "$oid": "6667dedc0dec98e677cf693a"
+    },
+    "name": "root",
+    "contentType": "directory",
+    "child": [
+      {
+        "$oid": "65dea21f3a447a3487f94063"
+      },
+      {
+        "$oid": "6667e0b80dec98e677cf693e"
+      },
+      {
+        "$oid": "6667e26b0dec98e677cf693f"
+      }
+    ],
+    "createdAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    },
+    "updatedAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "65dea21f3a447a3487f94063"
+    },
+    "name": "src",
+    "contentType": "directory",
+    "child": [
+      {
+        "$oid": "6667e2940dec98e677cf6940"
+      },
+      {
+        "$oid": "6667e2a50dec98e677cf6941"
+      },
+      {
+        "$oid": "6667e2b40dec98e677cf6942"
+      }
+    ],
+    "parent": [
+      {
+        "$oid": "6667dedc0dec98e677cf693a"
+      }
+    ],
+    "createdAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    },
+    "updatedAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6667e0b80dec98e677cf693e"
+    },
+    "name": "public",
+    "contentType": "directory",
+    "parent": [
+      {
+        "$oid": "6667dedc0dec98e677cf693a"
+      }
+    ],
+    "createdAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    },
+    "updatedAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6667e26b0dec98e677cf693f"
+    },
+    "name": "index.js",
+    "contentType": "file",
+    "parent": [
+      {
+        "$oid": "6667dedc0dec98e677cf693a"
+      }
+    ],
+    "createdAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    },
+    "updatedAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6667e2940dec98e677cf6940"
+    },
+    "name": "app",
+    "contentType": "directory",
+    "parent": [
+      {
+        "$oid": "65dea21f3a447a3487f94063"
+      }
+    ],
+    "createdAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    },
+    "updatedAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6667e2a50dec98e677cf6941"
+    },
+    "name": "component",
+    "contentType": "directory",
+    "parent": [
+      {
+        "$oid": "65dea21f3a447a3487f94063"
+      }
+    ],
+    "createdAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    },
+    "updatedAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6667e2b40dec98e677cf6942"
+    },
+    "name": "layout.tsx",
+    "contentType": "file",
+    "child": [
+      {
+        "$oid": "6667dedc0dec98e677cf693a"
+      },
+      {
+        "$oid": "65dea2366ad575ce3a2afd75"
+      },
+      {
+        "$oid": "65dea82d98fc63e9d4bd34a2"
+      }
+    ],
+    "parent": [
+      {
+        "$oid": "65dea21f3a447a3487f94063"
+      }
+    ],
+    "createdAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    },
+    "updatedAt": {
+      "$date": "2023-09-18T14:52:57.048Z"
+    }
+  }
+]

@@ -1,7 +1,6 @@
 'use client'
 
 import { useFormStatus } from "react-dom"
-import Loading from "../Loading"
 
 export default function SubmitBtn({ title }: { title: string }) {
     const { pending } = useFormStatus()

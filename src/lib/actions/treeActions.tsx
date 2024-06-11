@@ -1,41 +1,17 @@
 "use server"
 
-import FileSystemHierarchy from "@/models/FileSystemHierarchy"
 import dbConnect from "../dbConnect"
-import FolderContent from "@/components/FolderContent"
-import FileContent from "@/components/FileContent"
-import { fileSystemDocument } from "../types/tree"
-import TreeWrapper from "@/components/TreeWrapper"
-import Hierarchy from "@/models/Hierarchy"
+import Resource from "@/models/Resource";
 import { revalidatePath } from "next/cache"
 
-export const renderTree = async (parent: string = "tree"): Promise<JSX.Element[]> => {
-    await dbConnect()
-    const result: fileSystemDocument[] = await FileSystemHierarchy.find({ parent })
+export const createDbResource = async (prevState: never, queryData: FormData) => {
 
-    return result.map(file => {
-        if (file.contentType == "directory") {
-            // return <TreeWrapper file={file}><FolderContent file={file} renderTree={renderTree} /></TreeWrapper>
-            return <FolderContent file={file} renderTree={renderTree} />
-        }
-        return <FileContent file={file} />
-        // return <TreeWrapper file={file}><FileContent file={file} /></TreeWrapper>
-    })
-}
+    const name = queryData.get('name') as string
+    const contentType = queryData.get('contentType') as "directory" | "file"
+    const parentId = queryData.get('parentId') as string
 
-interface hierarchyFormData {
-    name: string;
-    contentType: "directory" | "file";
-    path: string;
-}
-export const createFolderHierachy = async (prevState: never, queryData: FormData) => {
-    const rawFormData: hierarchyFormData = {
-        name: queryData.get('name') as string,
-        contentType: queryData.get('contentType') as "directory" | "file",
-        path: queryData.get('path') as string
-    }
 
-    if (!rawFormData.name || !rawFormData.contentType || !rawFormData.path) {
+    if (!name || !contentType || !parentId) {
         return {
             success: false,
             msg: "all field are required"
@@ -44,16 +20,26 @@ export const createFolderHierachy = async (prevState: never, queryData: FormData
 
     try {
         await dbConnect()
-        const checkDocument = await Hierarchy.find({ name: rawFormData.name, path: rawFormData.path })
+        const checkDocument = await Resource.find({ name: name, parent: { $in: parentId } })
         if (checkDocument.length) {
             return {
                 success: false,
                 msg: `${rawFormData.name} is already exits in this directory`
             }
         }
-        const document = await new Hierarchy(rawFormData).save()
-        // console.log(document)
-        revalidatePath(rawFormData.path)
+
+        const childResource = await new Resource({
+            name,
+            contentType,
+            parent: [parentId]
+        }).save()
+        await Resource.findByIdAndUpdate(
+            parentId,
+            { $push: { child: childResource._id } },
+            { new: true }
+        )
+        revalidatePath('/tree/main')
+        revalidatePath(`/tree/main/${parentId}`)
 
         return {
             success: true,
@@ -68,3 +54,4 @@ export const createFolderHierachy = async (prevState: never, queryData: FormData
     }
 
 }
+

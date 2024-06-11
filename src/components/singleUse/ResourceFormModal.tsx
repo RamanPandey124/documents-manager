@@ -1,18 +1,24 @@
-import { createFolderHierachy } from "@/lib/actions/treeActions";
-import InputBox from "./InputBox";
-import SubmitBtn from "./SubmitBtn";
-import { useFormState } from "react-dom";
+import { createDbResource } from "@/lib/actions/treeActions"
+import { useFormState } from "react-dom"
+import InputBox from "../reuseable/InputBox"
+import SubmitBtn from "../reuseable/SubmitBtn"
+import { useState } from "react"
+import FolderSelector from "../singleUse/FolderSelector"
 
-
-
-export default function FolderArchitect({ path, handleModal }: { path: string, handleModal: () => void }) {
-    const [state, formAction] = useFormState(createFolderHierachy, null)
+export default function ResourceFormModal({ handleModal }: { handleModal: () => void }) {
+    const [state, formAction] = useFormState(createDbResource, {})
     if (state?.success) {
         handleModal()
     }
+    const [currentParent, setCurrent] = useState<string>()
+
+    const handleFolder = (parentId: string) => {
+        setCurrent(parentId)
+    }
+
 
     return (
-        <div>
+        <div className="w-80">
             <h1 className="mb-4 text-2xl text-blue-500">Create new</h1>
             <form className="space-y-2" action={formAction}>
                 <span>
@@ -26,12 +32,20 @@ export default function FolderArchitect({ path, handleModal }: { path: string, h
                     </select>
                 </span>
 
-                <InputBox name="path" label="Path" type="text" placeholder="path" defaultValue={path} />
                 <InputBox name="name" label="Name" type="text" placeholder="name your folder/file" focus />
+                <InputBox name="parentId" type="hidden" value={currentParent} />
+
+                <div>
+                    <label>Path</label>
+                    <div className="border-2 rounded-md h-28 p-2 ">
+                        <FolderSelector handleFolder={handleFolder} />
+                    </div>
+                </div>
 
                 <div className="flex justify-end">
                     <SubmitBtn title="Create" />
                 </div>
+
                 < p className="text-red-400 text-lg">{state?.msg}</p>
             </form>
         </div >

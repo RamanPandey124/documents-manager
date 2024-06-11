@@ -1,11 +1,6 @@
+import { ModalInterface } from "@/lib/types/tree";
 import React from "react";
 import { MdCancel } from "react-icons/md";
-
-interface ModalInterface {
-    isModal: boolean;
-    handleModal: () => void;
-    children: React.ReactNode;
-}
 
 export default function Modal({ isModal, handleModal, children }: ModalInterface) {
     if (!isModal) {
