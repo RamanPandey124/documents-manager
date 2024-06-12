@@ -15,9 +15,9 @@ export default async function GetEntries({ path }: { path: string }) {
     return <tbody className="divide-y-2 divide-zinc-500 ">
         {Entries.map(file => {
             if (file.contentType === 'directory') {
-                return <ResourceDirectory file={file} />
+                return <ResourceDirectory key={file._id} file={file} />
             }
-            return <ResourceFile file={file} />
+            return <ResourceFile key={file._id} file={file} />
         })}
     </tbody>
 }

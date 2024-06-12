@@ -14,7 +14,7 @@ export default function ResourceFile({ file }: { file: resourceDocument }) {
                 {file.contentType}
             </td>
             <td>
-                {file.createdAt.toLocaleDateString()}
+                {file.updatedAt.toLocaleDateString()}
             </td>
 
         </tr>

@@ -1,5 +1,6 @@
 "use server"
 
+import fs from 'fs'
 import dbConnect from "../dbConnect"
 import Resource from "@/models/Resource";
 import { revalidatePath } from "next/cache"
@@ -28,6 +29,11 @@ export const createDbResource = async (prevState: never, queryData: FormData) =>
             }
         }
 
+        // if (contentType === 'file') {
+        //     console.log(name)
+        //     fs.writeFileSync(`public/uploads/${name}`, "")
+        // }
+
         const childResource = await new Resource({
             name,
             contentType,
@@ -47,11 +53,10 @@ export const createDbResource = async (prevState: never, queryData: FormData) =>
         }
     }
     catch (error) {
+        console.log(error)
         return {
-            success: false,
-            msg: error
+            success: false
         }
     }
 
 }
-
