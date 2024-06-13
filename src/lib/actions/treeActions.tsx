@@ -10,13 +10,13 @@ import { permanentRedirect, redirect } from 'next/navigation';
 
 
 export const createDbResource = async (prevState: never, queryData: FormData) => {
+    /**Getting form values */
+    const name = queryData.get('name') as string | undefined
+    const contentType = queryData.get('contentType') as "directory" | "file"
+    const parentId = queryData.get('parentId') as string
+    const formType = queryData.get('formType') as "upload" | "create"
+    const file: File | null = queryData.get('file') as unknown as File;
     try {
-        /**Getting form values */
-        const name = queryData.get('name') as string | undefined
-        const contentType = queryData.get('contentType') as "directory" | "file"
-        const parentId = queryData.get('parentId') as string
-        const formType = queryData.get('formType') as "upload" | "create"
-        const file: File | null = queryData.get('file') as unknown as File;
 
         /**Checking form inputs availability */
         if (!contentType || !parentId || (formType === 'create' && !name) || (formType === 'upload' && file.name === 'undefined')) {
@@ -65,24 +65,18 @@ export const createDbResource = async (prevState: never, queryData: FormData) =>
                 rawFormData.uniqueName = uniqueName;
                 rawFormData.filePath = filePath
             }
-            }
-        
+        }
+
         /**create new Resource in the db and push its _id in the current directory child array */
         const childResource = await new Resource(rawFormData).save()
         await Resource.findByIdAndUpdate(
             parentId,
             { $push: { child: childResource._id } },
             { new: true }
-            )
-            
-            revalidatePath('/tree/main')
-            revalidatePath(`/tree/main/${parentId}`)
-            // redirect(`/tree/main/${parentId}`)
-            
-        return {
-            success: true,
-            msg: "new document created"
-        }
+        )
+
+        revalidatePath('/tree/main')
+        revalidatePath(`/tree/main/${parentId}`)
     }
     catch (error) {
         console.log(error)
@@ -91,6 +85,8 @@ export const createDbResource = async (prevState: never, queryData: FormData) =>
             msg: "Server Error !"
         }
     }
+
+    redirect(`/tree/main/${parentId}`)
 
 }
 
@@ -104,11 +100,12 @@ export const getFileData = async (id: string): Promise<IgetFileData> => {
     try {
         await dbConnect()
 
-        const file: (resourceDocument | null) = await Resource.findById(id)
+        let file = await Resource.findById(id) as resourceDocument
         if (!file || !file.filePath) return { success: false, msg: 'not any file exists' }
 
         const content = fs.readFileSync(path.resolve(file.filePath), 'utf-8');
 
+        file = JSON.parse(JSON.stringify(file))
         return {
             success: true,
             msg: "file content",
@@ -122,5 +119,21 @@ export const getFileData = async (id: string): Promise<IgetFileData> => {
             msg: "Server Error !"
         }
 
+    }
+}
+
+export const updateFileContent = async (prevState: never, formData: FormData) => {
+    try {
+        const content = formData.get('content') as string
+        const uniquePath = formData.get('uniquePath') as string
+        const fileId = formData.get('fileId') as string
+        if (!content || !uniquePath || !fileId) return { success: false, msg: "Unable to update changes" }
+
+        fs.writeFileSync(uniquePath, content)
+        revalidatePath(`/tree/blob/${fileId}`)
+        return { success: true, msg: "Updated successfully..." }
+
+    } catch (error) {
+        return { success: false, msg: "Server Error !" }
     }
 }

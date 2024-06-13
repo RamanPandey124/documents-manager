@@ -7,9 +7,11 @@ import FolderSelector from "../singleUse/FolderSelector"
 
 export default function ResourceFormModal({ handleModal, FormType }: { handleModal: () => void, FormType: string }) {
     const [state, formAction] = useFormState(createDbResource, {})
-    if (state?.success) {
+
+    if (state === undefined) {
         handleModal()
     }
+
     const [currentParent, setCurrent] = useState<string>()
 
     const handleFolder = (parentId: string) => {
@@ -38,7 +40,7 @@ export default function ResourceFormModal({ handleModal, FormType }: { handleMod
                         <InputBox name="file" type="file" />
                         <InputBox type="hidden" name="contentType" value={'file'} />
                     </>}
-                    
+
                 <InputBox name="formType" type="hidden" value={FormType} />
                 <InputBox name="parentId" type="hidden" value={currentParent} />
 
