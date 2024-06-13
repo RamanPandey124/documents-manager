@@ -1,7 +1,12 @@
-import RenderResource from "@/components/tuesday/RenderResource"
+import GetEntries from "@/components/tuesday/GetEntries"
+import { Suspense } from "react"
 
 export default function MainPage() {
     const id = "6667dedc0dec98e677cf693a"
-    return <RenderResource parentId={id} />
+    return (
+        <Suspense fallback={"Loading..."}>
+            <GetEntries path={id} />
+        </Suspense>
+    )
 
 }

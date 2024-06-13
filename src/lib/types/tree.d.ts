@@ -7,7 +7,6 @@ export interface InputProps {
     focus?: boolean;
     defaultValue?: string | number
 }
-
 export interface ModalInterface {
     isModal: boolean;
     handleModal: () => void;
@@ -17,6 +16,8 @@ export interface resourceDocument {
     _id: string;
     name: string;
     contentType: 'directory' | "files";
+    uniqueName?: string;
+    filePath?: string
     child?: string[];
     parent?: string[];
     createdAt: Date;
@@ -35,4 +36,19 @@ export interface getFolderResponseType {
     success: boolean,
     msg: string,
     folders: rootFolderType[]
+}
+
+export interface IdbResource {
+    name?: string;
+    contentType: "directory" | "file";
+    parent: string[];
+    uniqueName?: string;
+    filePath?: string
+}
+
+export interface IgetFileData {
+    success: boolean;
+    msg: string;
+    file?: resourceDocument;
+    content?: string;
 }

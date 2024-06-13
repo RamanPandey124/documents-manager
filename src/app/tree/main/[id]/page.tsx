@@ -1,11 +1,11 @@
-import RenderResource from "@/components/tuesday/RenderResource";
+import GetEntries from "@/components/tuesday/GetEntries";
+import { Suspense } from "react";
 
 
-export default async function MainPage({ params }: { params: { id: string } }) {
-
-    return <RenderResource parentId={params.id} />
+export default async function MainIdPage({ params }: { params: { id: string } }) {
+    return (
+        <Suspense fallback={"Loading..."}>
+            <GetEntries path={params.id} />
+        </Suspense>
+    )
 }
-
-
-
-

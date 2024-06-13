@@ -9,6 +9,8 @@ const resourceSchema: Schema<IResource> = new Schema(
             enum: ['directory', 'file'],
             required: true,
         },
+        uniqueName: String,
+        filePath: String,
         child: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Resource' }],
         parent: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Resource' }],
     },

@@ -5,4 +5,6 @@ export interface IResource extends Document {
     contentType: 'directory' | 'file';
     child?: mongoose.Types.ObjectId[];
     parent?: mongoose.Types.ObjectId[];
+    uniqueName?: string;
+    filePath?: string
 }
