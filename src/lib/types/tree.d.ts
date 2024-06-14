@@ -46,6 +46,10 @@ export interface IdbResource {
     filePath?: string
 }
 
+export interface IgetDrive {
+    parent: resourceDocument,
+    children: resourceDocument[]
+}
 export interface IgetFileData {
     success: boolean;
     msg: string;

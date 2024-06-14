@@ -5,7 +5,7 @@ import path from 'path';
 import dbConnect from "../dbConnect"
 import Resource from "@/models/Resource";
 import { revalidatePath } from "next/cache"
-import { IdbResource, IgetFileData, resourceDocument } from '../types/tree'
+import { IdbResource, IgetDrive, IgetFileData, resourceDocument } from '../types/tree'
 import { permanentRedirect, redirect } from 'next/navigation';
 
 
@@ -90,10 +90,16 @@ export const createDbResource = async (prevState: never, queryData: FormData) =>
 
 }
 
-export const getDriveContents = async (parentId: string): Promise<resourceDocument[]> => {
+export const getDriveContents = async (parentId: string): Promise<IgetDrive> => {
     // await new Promise(resolve => setTimeout(resolve, 2000));
     await dbConnect()
-    return await Resource.find({ parent: { $in: parentId } })
+    let parent = await Resource.findById(parentId).select(["name", "_id"]) as resourceDocument
+    let children: resourceDocument[] = await Resource.find({ parent: { $in: parentId } })
+
+    parent = JSON.parse(JSON.stringify(parent))
+    
+    return { parent, children }
+    // return await Resource.find({ parent: { $in: parentId } })
 }
 
 export const getFileData = async (id: string): Promise<IgetFileData> => {

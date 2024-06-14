@@ -1,4 +1,6 @@
+import PathNavigator from "@/components/fileContent/PathNavigator";
 import ResourceFormSelector from "@/components/newResources/ResourceFormSelector";
+import CounterProvider from "@/context/CounterContext";
 import Link from "next/link";
 
 export default function RootLayout({
@@ -8,11 +10,13 @@ export default function RootLayout({
 }) {
     return (
         <div>
-            <ResourceFormSelector />
-            <div className=" min-h-24 bg-zinc-800 pt-4 space-y-4">
-                <h1 className="px-4 text-3xl"><Link href={'/tree/main'}>My Files</Link></h1>
-                {children}
-            </div>
+            <CounterProvider>
+                <ResourceFormSelector />
+                <div className=" min-h-24 bg-zinc-800 pt-4 space-y-4">
+                    <PathNavigator />
+                    {children}
+                </div>
+            </CounterProvider>
         </div>
     );
 }
