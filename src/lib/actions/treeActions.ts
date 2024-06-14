@@ -91,15 +91,20 @@ export const createDbResource = async (prevState: never, queryData: FormData) =>
 }
 
 export const getDriveContents = async (parentId: string): Promise<IgetDrive> => {
-    // await new Promise(resolve => setTimeout(resolve, 2000));
-    await dbConnect()
-    let parent = await Resource.findById(parentId).select(["name", "_id"]) as resourceDocument
-    let children: resourceDocument[] = await Resource.find({ parent: { $in: parentId } })
+    try {
+        await dbConnect()
+        let parent = await Resource.findById(parentId).select(["name", "_id"]) as resourceDocument
+        let children: resourceDocument[] = await Resource.find({ parent: { $in: parentId } })
 
-    parent = JSON.parse(JSON.stringify(parent))
-    
-    return { parent, children }
-    // return await Resource.find({ parent: { $in: parentId } })
+        parent = JSON.parse(JSON.stringify(parent))
+        children = JSON.parse(JSON.stringify(children))
+
+        return { parent, children }
+    }
+    catch (error) {
+        console.log(error)
+        return null
+    }
 }
 
 export const getFileData = async (id: string): Promise<IgetFileData> => {

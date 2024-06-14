@@ -1,17 +1,17 @@
 "use client"
 import { resourceDocument } from "@/lib/types/tree";
 import { RxDragHandleDots2 } from "react-icons/rx";
-import FileRename from "../fileOptions/FileRename";
-import FileCopy from "../fileOptions/FileCopy";
-import FileCut from "../fileOptions/FileCut";
-import FileDelete from "../fileOptions/FileDelete";
 import { IoText } from "react-icons/io5";
 import { useContext } from "react";
 import { CounterContext } from "@/context/CounterContext";
+import { GoCopy } from "react-icons/go";
+import { IoIosCut } from "react-icons/io";
+import { MdDelete } from "react-icons/md";
+
 
 
 export default function FileOptionsMenu({ file }: { file: resourceDocument }) {
-    const { dispatch } = useContext(CounterContext)
+    const { dispatch, state } = useContext(CounterContext)
 
     return (
         <div className="relative group/feature">
@@ -22,6 +22,24 @@ export default function FileOptionsMenu({ file }: { file: resourceDocument }) {
                     className="flex items-center space-x-4 hover:bg-zinc-700 py-1 rounded-md cursor-pointer">
                     <IoText className="h-5 w-5" />
                     <p>Rename</p>
+                </div>
+                <div
+                    onClick={() => dispatch({ type: "TRANSFER", payload: { file, method: 'copy', oldParent: state.currentParent } })}
+                    className="flex items-center space-x-4 hover:bg-zinc-700 py-1 rounded-md cursor-pointer">
+                    <GoCopy className="h-5 w-5" />
+                    <p>Copy</p>
+                </div>
+                <div
+                    onClick={() => dispatch({ type: "TRANSFER", payload: { file, method: 'cut', oldParent: state.currentParent } })}
+                    className="flex items-center space-x-4 hover:bg-zinc-700 py-1 rounded-md cursor-pointer">
+                    <IoIosCut className="h-5 w-5" />
+                    <p>Cut</p>
+                </div>
+                <div
+                    onClick={() => dispatch({ type: 'DELETE', payload: { id: file._id, parentId: state.currentParent } })}
+                    className="flex items-center space-x-4 hover:bg-zinc-700 py-1 rounded-md cursor-pointer">
+                    <MdDelete className="h-5 w-5" />
+                    <p>Delete</p>
                 </div>
             </div>
         </div>

@@ -57,7 +57,14 @@ export interface IgetFileData {
     content?: string;
 }
 
-export interface IactionResonse{
-    success:boolean,
-    msg:string
+export interface IactionResonse {
+    success: boolean,
+    msg: string
+}
+
+export interface ItransferDetail {
+    child: string | undefined;
+    oldParent: string | undefined;
+    newParent: string | null;
+    method: "copy" | "cut" | undefined;
 }

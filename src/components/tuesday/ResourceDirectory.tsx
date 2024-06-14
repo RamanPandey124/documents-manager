@@ -1,12 +1,16 @@
-import { IResource } from "@/lib/types/model";
+
 import { resourceDocument } from "@/lib/types/tree";
 import Link from "next/link";
 import { FaFolder } from "react-icons/fa";
-import { RxDragHandleDots2 } from "react-icons/rx";
 import FileOptionsMenu from "../singleUse/FileOptionsMenu";
 import { CiFileOn } from "react-icons/ci";
 
 export default function ResourceDirectory({ file }: { file: resourceDocument }) {
+    function convert(date: string) {
+        let strDate = new Date(date)
+        return strDate.toLocaleDateString()
+    }
+
     return (
         <tr className="hover:bg-zinc-700 group/item">
             <td className="px-4 py-2 flex">
@@ -25,7 +29,8 @@ export default function ResourceDirectory({ file }: { file: resourceDocument }) 
                 {file.contentType}
             </td>
             <td>
-                {file.updatedAt.toLocaleDateString()}
+                {/* {file.updatedAt} */}
+                {convert(file.updatedAt.toString())}
             </td>
             <td className="invisible group-hover/item:visible">
                 <FileOptionsMenu file={file} />

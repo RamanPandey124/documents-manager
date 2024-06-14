@@ -1,9 +1,15 @@
 "use client"
 
-import { createContext, useContext, useReducer } from "react"
+import { Dispatch, createContext, useContext, useReducer } from "react"
 import { counterReducer, initialState } from "./CounterReducer"
+import { Action, State } from "@/lib/types/context";
 
-export const CounterContext = createContext()
+interface CounterContextProps {
+    state: State;
+    dispatch: Dispatch<Action>;
+}
+
+export const CounterContext = createContext<CounterContextProps>({} as CounterContextProps);
 
 export default function CounterProvider({ children }: { children: React.ReactNode }) {
     const [state, dispatch] = useReducer(counterReducer, initialState)
