@@ -56,3 +56,8 @@ export interface IgetFileData {
     file?: resourceDocument;
     content?: string;
 }
+
+export interface IactionResonse{
+    success:boolean,
+    msg:string
+}
