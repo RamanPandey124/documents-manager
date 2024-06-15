@@ -1,8 +1,9 @@
 "use server"
 
+import fs from 'fs'
 import Resource from "@/models/Resource"
 import dbConnect from "../dbConnect"
-import { IactionResonse, ItransferDetail } from "../types/tree"
+import { IactionResonse, ItransferDetail, resourceDocument } from "../types/tree"
 import { revalidatePath } from "next/cache"
 
 export const RenameFileName = async (prevState: never, formData: FormData): Promise<IactionResonse> => {
@@ -36,6 +37,12 @@ export const TransferFile = async (transferDetail: ItransferDetail): Promise<Iac
         const { child, newParent, oldParent, method } = transferDetail
         if (!child || !newParent || !oldParent || !method) return { success: false, msg: "Resource not provided" }
 
+        if (child === newParent) {
+            return {
+                success: true,
+                msg: 'not inserting in itself'
+            }
+        }
         await dbConnect()
         const childData = await Resource.findByIdAndUpdate(child, { $push: { parent: newParent } }, { new: true })
         const newParentData = await Resource.findByIdAndUpdate(newParent, { $push: { child } }, { new: true })
@@ -67,22 +74,48 @@ export const TransferFile = async (transferDetail: ItransferDetail): Promise<Iac
     }
 
 }
-
 interface IdeleteDetail {
-    id: string;
+    file: resourceDocument,
     parentId: string
 }
+
 export const DeleteFile = async (deleteDetail: IdeleteDetail): Promise<IactionResonse> => {
     try {
-        const { id, parentId } = deleteDetail
-        if (!id || !parentId) return { success: false, msg: "Delete item not found" }
+        await new Promise((res) => setTimeout(() => res(3), 3000))
 
+        const { file, parentId } = deleteDetail
+        if (!file._id || !parentId) return { success: false, msg: "Delete item not found" }
+
+        /** if file exist in only one parent, just deleting it as it has no reference to any other folder */
+        await dbConnect()
+
+        const recursive = async (file: resourceDocument, parentId: string) => {
+            console.log({ file, parentId })
+
+            if (file.parent && file.parent.length === 1) {
+                await Resource.findByIdAndDelete(file._id)
+                if (file.contentType === 'files') {
+                    fs.unlinkSync(file.filePath as string)
+                }
+                else if (file.child && file.child.length) {
+                    const childs: resourceDocument[] = await Resource.find({ parent: { $in: parentId } })
+                    childs.forEach(child => recursive(child, file._id))
+                }
+            }
+            else {
+                await Resource.findByIdAndUpdate(file._id, { $pull: { parent: parentId } })
+            }
+
+        }
+
+        await recursive(file, parentId)
+
+        // console.log(file)
         /** Deleting file from its parent */
-        // const parentData = await Resource.findByIdAndUpdate(parentId, { $pull: { child: id } })
+        await Resource.findByIdAndUpdate(parentId, { $pull: { child: file._id } })
 
-        /** checking no of parents in file */
-        const checkParent = await Resource.findById(id).select(["parent"])
-
+        revalidatePath(`/tree/main`)
+        revalidatePath(`/tree/main/${parentId}`)
 
         return {
             success: true,

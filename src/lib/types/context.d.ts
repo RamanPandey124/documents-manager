@@ -1,3 +1,5 @@
+import { resourceDocument } from "./tree";
+
 export interface ITransferDetail {
     oldParent?: string;
     newParent: string;
@@ -24,7 +26,7 @@ export interface ItransferPayload {
 }
 
 export interface IDeletePayload {
-    id: string,
+    file: resourceDocument,
     parentId: string
 }
 

@@ -36,7 +36,7 @@ export default function FileOptionsMenu({ file }: { file: resourceDocument }) {
                     <p>Cut</p>
                 </div>
                 <div
-                    onClick={() => dispatch({ type: 'DELETE', payload: { id: file._id, parentId: state.currentParent } })}
+                    onClick={() => dispatch({ type: 'DELETE', payload: { file, parentId: state.currentParent } })}
                     className="flex items-center space-x-4 hover:bg-zinc-700 py-1 rounded-md cursor-pointer">
                     <MdDelete className="h-5 w-5" />
                     <p>Delete</p>

@@ -10,7 +10,7 @@ import { TransferFile } from "@/lib/actions/fileOptionsActions";
 export default function PathNavigator() {
     const { state, dispatch } = use(CounterContext)
     const { path, currentParent, transferDetail, Transfermethod } = state
-    const isPaste = currentParent === transferDetail?.oldParent
+    const isPaste = (currentParent === transferDetail?.oldParent) || (currentParent === transferDetail?.fileID)
     const [isTransfering, setTransfer] = useState(false)
 
     const handleTransfer = async () => {
