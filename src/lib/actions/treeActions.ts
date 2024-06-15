@@ -103,7 +103,7 @@ export const getDriveContents = async (parentId: string): Promise<IgetDrive> => 
     }
     catch (error) {
         console.log(error)
-        return null
+        return
     }
 }
 

@@ -15,7 +15,7 @@ export interface ModalInterface {
 export interface resourceDocument {
     _id: string;
     name: string;
-    contentType: 'directory' | "files";
+    contentType: 'directory' | "file";
     uniqueName?: string;
     filePath?: string
     child?: string[];
@@ -67,4 +67,9 @@ export interface ItransferDetail {
     oldParent: string | undefined;
     newParent: string | null;
     method: "copy" | "cut" | undefined;
+}
+
+export interface IdeleteDetail {
+    file: resourceDocument,
+    parentId: string
 }

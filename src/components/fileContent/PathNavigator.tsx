@@ -6,6 +6,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { MdOutlineNavigateNext } from "react-icons/md";
 import { FaPaste } from "react-icons/fa6";
 import { TransferFile } from "@/lib/actions/fileOptionsActions";
+import { GrClear } from "react-icons/gr";
 
 export default function PathNavigator() {
     const { state, dispatch } = use(CounterContext)
@@ -30,21 +31,27 @@ export default function PathNavigator() {
 
     return (
         <>
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-6 border-2">
                 <h1 className="px-4 text-3xl"><Link href={'/tree/main'}>My Files</Link></h1>
 
                 {state.isTransfer ?
-                    <div className="">
+                    <div>
                         {isTransfering ?
                             <div className="flex items-center justify-center h-full w-full">
                                 <div className={`animate-spin rounded-full border-2 border-b-0 border-blue-300 h-4 w-4`} />
                             </div>
                             :
-                            <button
-                                disabled={isPaste}
-                                onClick={handleTransfer}>
-                                <FaPaste className={`${!isPaste && "text-white hover:text-slate-300"} h-5 w-5 text-gray-500 `} />
-                            </button>
+                            <div className="space-x-6 flex">
+                                <button
+                                    disabled={isPaste}
+                                    onClick={handleTransfer}>
+                                    <FaPaste className={`${!isPaste && "text-white hover:text-slate-300"} h-6 w-6 text-gray-500 `} />
+                                </button>
+                                <button
+                                    onClick={() => dispatch({ type: "END_TRANSFER" })}>
+                                    <GrClear className={`text-red-200 hover:text-slate-300 h-6 w-6 `} />
+                                </button>
+                            </div>
                         }
                     </div>
                     : null}
