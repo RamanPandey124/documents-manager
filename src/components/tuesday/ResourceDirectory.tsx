@@ -6,8 +6,9 @@ import FileOptionsMenu from "../singleUse/FileOptionsMenu";
 import { CiFileOn } from "react-icons/ci";
 
 export default function ResourceDirectory({ file }: { file: resourceDocument }) {
-    function convert(date: string) {
+    function convert(date: string, full: boolean = false) {
         let strDate = new Date(date)
+        if (full) { return `${strDate.toLocaleString().split(",")[1]}, ${strDate.toDateString()}` }
         return strDate.toLocaleDateString()
     }
 
@@ -27,10 +28,15 @@ export default function ResourceDirectory({ file }: { file: resourceDocument }) 
             </td>
             <td>
                 {file.contentType}
+
             </td>
             <td>
-                {/* {file.updatedAt} */}
-                {convert(file.updatedAt.toString())}
+                <div className="relative group/time cursor-pointer">
+                    {convert(file.updatedAt.toString())}
+                    <span className="border-2 absolute top-6 right-1/2 w-52 text-sm bg-gray-900 text-gray-300 invisible group-hover/time:visible z-10">
+                        {convert(file.updatedAt.toString(), true)}
+                    </span>
+                </div>
             </td>
             <td className="invisible group-hover/item:visible">
                 <FileOptionsMenu file={file} />

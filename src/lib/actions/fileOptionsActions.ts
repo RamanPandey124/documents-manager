@@ -16,7 +16,26 @@ export const RenameFileName = async (prevState: never, formData: FormData): Prom
         if (!id || !name) return { success: false, msg: "All fields are required" }
         await dbConnect()
 
-        await Resource.findByIdAndUpdate(id, { $set: { name } })
+        const oldDocument: IResource | null = await Resource.findById(id)
+        // const resource: IResource | null = await Resource.findByIdAndUpdate(id, { $set: { name } }, { new: true })
+        if (!oldDocument) {
+            return {
+                success: false,
+                msg: 'file not exist to rename'
+            }
+        }
+
+        if (oldDocument.contentType === 'file' && oldDocument.filePath) {
+            const uniqueName = `${Date.now()}-${name}`
+            const filePath = path.join('public/uploads/', uniqueName);
+            await fs.promises.rename(oldDocument.filePath, filePath)
+            const newDocument = await Resource.findByIdAndUpdate(id, { $set: { name, uniqueName, filePath } }, { new: true })
+            console.log({ newDocument })
+        }
+        else {
+            const resource = await Resource.findByIdAndUpdate(id, { $set: { name } }, { new: true })
+            console.log({ resource })
+        }
 
         revalidatePath(`/tree/main/${id}`)
 

@@ -73,3 +73,9 @@ export interface IdeleteDetail {
     file: resourceDocument,
     parentId: string
 }
+
+export interface IfileOptionsMenuProps {
+    onClick: () => void;
+    icon: JSX.Element;
+    name: string;
+}
