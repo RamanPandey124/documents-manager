@@ -20,7 +20,7 @@ export default function ResourceFormSelector() {
     }
 
     return (
-        <div className="border-2 h-12 flex justify-end items-center px-4">
+        <div className="h-12 flex justify-end items-center px-4">
             <div className="flex space-x-2">
                 <div
                     onClick={() => handleType('upload')}
