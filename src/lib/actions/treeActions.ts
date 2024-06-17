@@ -75,8 +75,8 @@ export const createDbResource = async (prevState: never, queryData: FormData) =>
             { new: true }
         )
 
-        revalidatePath('/tree/main')
-        revalidatePath(`/tree/main/${parentId}`)
+        revalidatePath('/main')
+        revalidatePath(`/main/${parentId}`)
     }
     catch (error) {
         console.log(error)
@@ -86,7 +86,7 @@ export const createDbResource = async (prevState: never, queryData: FormData) =>
         }
     }
 
-    redirect(`/tree/main/${parentId}`)
+    redirect(`/main/${parentId}`)
 
 }
 
@@ -99,11 +99,11 @@ export const getDriveContents = async (parentId: string): Promise<IgetDrive> => 
         parent = JSON.parse(JSON.stringify(parent))
         children = JSON.parse(JSON.stringify(children))
 
-        return { parent, children }
+        return { success: true, parent, children }
     }
     catch (error) {
         console.log(error)
-        return
+        return { success: false }
     }
 }
 
@@ -141,7 +141,7 @@ export const updateFileContent = async (prevState: never, formData: FormData) =>
         if (!content || !uniquePath || !fileId) return { success: false, msg: "Unable to update changes" }
 
         fs.writeFileSync(uniquePath, content)
-        revalidatePath(`/tree/blob/${fileId}`)
+        revalidatePath(`/blob/${fileId}`)
         return { success: true, msg: "Updated successfully..." }
 
     } catch (error) {

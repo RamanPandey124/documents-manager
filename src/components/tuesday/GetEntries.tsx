@@ -1,10 +1,15 @@
+
+import { redirect } from "next/navigation"
 import NavigateHandler from "../fileContent/NavigateHandler"
 import ResourceDirectory from "./ResourceDirectory"
 import { getDriveContents } from "@/lib/actions/treeActions"
 
 
 export default async function GetEntries({ path }: { path: string }) {
-    const { parent, children } = await getDriveContents(path)
+    const { parent, children, success } = await getDriveContents(path)
+    if (!success || !parent || !children) {
+        redirect('/main')
+    }
 
     return (
         <div className="px-4">

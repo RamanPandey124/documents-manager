@@ -7,7 +7,7 @@ import NavigateHandler from "@/components/fileContent/NavigateHandler";
 export default async function BlobIdPage({ params }: { params: { id: string } }) {
     const fileMetaData = await getFileData(params.id)
     if (!fileMetaData.success || !fileMetaData.file) {
-        redirect('/tree/main')
+        redirect('/main')
     }
     return (
         <>

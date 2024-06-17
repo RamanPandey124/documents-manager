@@ -2,10 +2,10 @@ import GetEntries from "@/components/tuesday/GetEntries"
 import { Suspense } from "react"
 
 export default function MainPage() {
-    const id = "6667dedc0dec98e677cf693a"
+    const root = process.env.ROOT_ID as string
     return (
         <Suspense fallback={"Loading..."}>
-            <GetEntries path={id} />
+            <GetEntries path={root} />
         </Suspense>
     )
 

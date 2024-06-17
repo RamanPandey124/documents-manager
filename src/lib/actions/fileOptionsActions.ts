@@ -43,10 +43,9 @@ export const RenameFileName = async (prevState: never, formData: FormData): Prom
         }
         else {
             const resource = await Resource.findByIdAndUpdate(id, { $set: { name } }, { new: true })
-            console.log({ resource })
         }
 
-        revalidatePath(`/tree/main/${id}`)
+        revalidatePath(`/main/${id}`)
 
         return {
             success: true,
@@ -102,9 +101,9 @@ export const TransferFile = async (transferDetail: ItransferData): Promise<Iacti
             await Resource.findByIdAndUpdate(newParent, { $push: { child: copyFile._id } }, { new: true })
         }
 
-        revalidatePath(`/tree/main`)
-        revalidatePath(`/tree/main/${newParent}`)
-        revalidatePath(`/tree/main/${oldParent}`)
+        revalidatePath(`/main`)
+        revalidatePath(`/main/${newParent}`)
+        revalidatePath(`/main/${oldParent}`)
 
         return {
             success: true,
@@ -151,8 +150,8 @@ export const DeleteFile = async (deleteDetail: IdeleteDetail): Promise<IactionRe
         /** Deleting file from its parent */
         await Resource.findByIdAndUpdate(parentId, { $pull: { child: file._id } })
 
-        revalidatePath(`/tree/main`)
-        revalidatePath(`/tree/main/${parentId}`)
+        revalidatePath(`/main`)
+        revalidatePath(`/main/${parentId}`)
 
         return {
             success: true,

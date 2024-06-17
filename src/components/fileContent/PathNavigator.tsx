@@ -44,7 +44,7 @@ export default function PathNavigator() {
     return (
         <>
             <div className="flex items-center space-x-6">
-                <h1 className="px-4 text-3xl hover:text-blue-800"><Link href={'/tree/main'}>My Files</Link></h1>
+                <h1 className="px-4 text-3xl hover:text-blue-800"><Link href={'/main'}>My Files</Link></h1>
 
                 {state.isTransfer ?
                     <div>
@@ -72,7 +72,7 @@ export default function PathNavigator() {
             <div className="mx-4 flex space-x-4 items-center">
                 {path.length > 1 &&
                     <div>
-                        <Link href={`/tree/main/${path[path.length - 2]._id}`}>
+                        <Link href={`/main/${path[path.length - 2]._id}`}>
                             <FaArrowLeft className="hover:text-gray-400 h-5 w-5" />
                         </Link>
                     </div>
@@ -85,7 +85,7 @@ export default function PathNavigator() {
                             <span key={item._id}>
                                 {index > 0 &&
                                     <MdOutlineNavigateNext className="inline mx-1" />}
-                                <Link href={`/tree/${route}/${item._id}`} className="hover:text-blue-400 hover:border-b-2 border-blue-400">{item.name}</Link>
+                                <Link href={`/${route}/${item._id}`} className="hover:text-blue-400 hover:border-b-2 border-blue-400">{item.name}</Link>
                             </span>
                         )
                     })}

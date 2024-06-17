@@ -14,11 +14,11 @@ export default function ResourceDirectory({ file }: { file: resourceDocument }) 
                 {file.contentType === 'directory' ?
                     <>
                         <FaFolder className="h-5 w-5 relative top-1 mr-4" />
-                        <Link href={`/tree/main/${file._id}`} className="hover:text-blue-400">{file.name}</Link>
+                        <Link href={`/main/${file._id}`} className="hover:text-blue-400">{file.name}</Link>
                     </> :
                     <>
                         <CiFileOn className="h-5 w-5 relative top-1 mr-4" />
-                        <Link href={`/tree/blob/${file._id}`} className="hover:text-blue-400">{file.name}</Link>
+                        <Link href={`/blob/${file._id}`} className="hover:text-blue-400">{file.name}</Link>
                     </>
                 }
             </td>

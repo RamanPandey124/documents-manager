@@ -50,8 +50,9 @@ export interface IdbResource {
 }
 
 export interface IgetDrive {
-    parent: resourceDocument,
-    children: resourceDocument[]
+    success: boolean,
+    parent?: resourceDocument,
+    children?: resourceDocument[]
 }
 export interface IgetFileData {
     success: boolean;

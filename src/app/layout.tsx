@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import CounterProvider from "@/context/CounterContext";
+import Global from "@/components/global/Global";
+import ResourceFormSelector from "@/components/newResources/ResourceFormSelector";
+import PathNavigator from "@/components/fileContent/PathNavigator";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +20,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className="flex flex-col h-screen">
+          <CounterProvider>
+            <Global />
+            <ResourceFormSelector />
+            <div className=" min-h-24 bg-zinc-800 pt-4 space-y-4 flex-1">
+              <PathNavigator />
+              {children}
+            </div>
+          </CounterProvider>
+        </div>
+      </body>
     </html>
   );
 }
