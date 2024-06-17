@@ -1,4 +1,4 @@
-import { Action, IDeletePayload, ItransferPayload, State } from "@/lib/types/context";
+import { Action, IDeletePayload, IDublicateDetails, IDuplicatePastePayload, ItransferPayload, State } from "@/lib/types/context";
 import { resourceDocument } from "@/lib/types/tree";
 
 export const initialState: State = {
@@ -7,7 +7,8 @@ export const initialState: State = {
     currentParent: null,
     isRename: false,
     isDelete: false,
-    isTransfer: false
+    isTransfer: false,
+    isDublicateExist: false,
 };
 
 const handlePath = (state: State, action: resourceDocument) => {
@@ -35,6 +36,7 @@ const handleRename = (state: State, action: resourceDocument) => {
 const handleCancelModal = (state: State) => {
     state.isRename = false
     state.isDelete = false
+    state.isDublicateExist = false
     return { ...state }
 }
 
@@ -44,11 +46,10 @@ const handleTransfer = (state: State, action: ItransferPayload) => {
     state.isTransfer = true
     state.Transfermethod = action.method
     state.transferDetail = {
+        fileName: action.file.name,
         fileID: action.file._id,
-        newParent: state.currentParent,
         oldParent: action.oldParent
     }
-    console.log(state)
 
     return { ...state }
 }
@@ -57,7 +58,6 @@ const handleEndTransfer = (state: State) => {
     state.isTransfer = false
     state.transferDetail = undefined
     state.Transfermethod = undefined
-    console.log(state)
     return { ...state }
 }
 
@@ -65,6 +65,13 @@ const handleDelete = (state: State, action: IDeletePayload) => {
     // console.log(action)
     state.isDelete = true
     state.deleteDetail = action
+    return { ...state }
+}
+
+const handleDublicatePaste = (state: State, action: IDublicateDetails) => {
+    state.isDublicateExist = true
+    state.DublicateDetails = action
+    console.log(state)
     return { ...state }
 }
 
@@ -82,6 +89,8 @@ export const counterReducer = (state: State, action: Action): State => {
             return handleEndTransfer(state);
         case "DELETE":
             return handleDelete(state, action.payload);
+        case 'DUBLICATE_PASTE':
+            return handleDublicatePaste(state, action.payload)
         default:
             return state;
     }

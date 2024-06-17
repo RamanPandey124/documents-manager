@@ -1,6 +1,7 @@
 
 
 import DeleteFormSelector from "./DeleteFormSelector"
+import DuplicateFormSelector from "./DuplicateFormSelector"
 import RenameFormSelector from "./RenameFormSelector"
 
 export default function Global() {
@@ -9,6 +10,7 @@ export default function Global() {
         <>
             <RenameFormSelector />
             <DeleteFormSelector />
+            <DuplicateFormSelector />
         </>
     )
 }

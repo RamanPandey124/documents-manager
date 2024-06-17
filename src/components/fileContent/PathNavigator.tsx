@@ -5,7 +5,7 @@ import { use, useContext, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
 import { MdOutlineNavigateNext } from "react-icons/md";
 import { FaPaste } from "react-icons/fa6";
-import { TransferFile } from "@/lib/actions/fileOptionsActions";
+import { TransferFile, checkDuplicatePaste } from "@/lib/actions/fileOptionsActions";
 import { GrClear } from "react-icons/gr";
 
 export default function PathNavigator() {
@@ -16,14 +16,26 @@ export default function PathNavigator() {
 
     const handleTransfer = async () => {
         const transferData = {
-            child: transferDetail?.fileID,
+            childId: transferDetail?.fileID,
+            childName: transferDetail?.fileName,
             oldParent: transferDetail?.oldParent,
             newParent: currentParent,
             method: Transfermethod
         }
         setTransfer(true)
-        const { success, msg } = await TransferFile(transferData)
-        if (success) {
+        const { success, msg, isDuplicateExist, providedDetail, existingDetail } = await checkDuplicatePaste(transferData)
+        if (!success && isDuplicateExist && providedDetail && existingDetail) {
+            const dublicateDetail = {
+                msg,
+                providedDetail,
+                existingDetail
+            }
+            dispatch({ type: "DUBLICATE_PASTE", payload: dublicateDetail })
+        }
+        else if (!success) {
+
+        }
+        else {
             dispatch({ type: "END_TRANSFER" })
         }
         setTransfer(false)
@@ -68,11 +80,12 @@ export default function PathNavigator() {
 
                 <div>
                     {path?.map((item, index) => {
+                        const route = item.contentType === 'file' ? 'blob' : 'main'
                         return (
                             <span key={item._id}>
                                 {index > 0 &&
                                     <MdOutlineNavigateNext className="inline mx-1" />}
-                                <Link href={`/tree/main/${item._id}`} className="hover:text-blue-400 hover:border-b-2 border-blue-400">{item.name}</Link>
+                                <Link href={`/tree/${route}/${item._id}`} className="hover:text-blue-400 hover:border-b-2 border-blue-400">{item.name}</Link>
                             </span>
                         )
                     })}

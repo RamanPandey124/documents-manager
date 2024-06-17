@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getFileData } from "@/lib/actions/treeActions";
 import FileEditor from "@/components/fileContent/Editor";
+import NavigateHandler from "@/components/fileContent/NavigateHandler";
 
 
 export default async function BlobIdPage({ params }: { params: { id: string } }) {
@@ -10,6 +11,7 @@ export default async function BlobIdPage({ params }: { params: { id: string } })
     }
     return (
         <>
+            <NavigateHandler parent={fileMetaData.file} />
             <FileEditor file={fileMetaData.file} content={fileMetaData.content as string} />
         </>
     )

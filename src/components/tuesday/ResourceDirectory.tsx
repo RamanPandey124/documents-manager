@@ -4,13 +4,9 @@ import Link from "next/link";
 import { FaFolder } from "react-icons/fa";
 import FileOptionsMenu from "../singleUse/FileOptionsMenu";
 import { CiFileOn } from "react-icons/ci";
+import { convert } from "@/lib/handlers/TimeFormat";
 
 export default function ResourceDirectory({ file }: { file: resourceDocument }) {
-    function convert(date: string, full: boolean = false) {
-        let strDate = new Date(date)
-        if (full) { return `${strDate.toLocaleString().split(",")[1]}, ${strDate.toDateString()}` }
-        return strDate.toLocaleDateString()
-    }
 
     return (
         <tr className="hover:bg-zinc-700 group/item">

@@ -3,21 +3,30 @@
 import fs from 'fs'
 import Resource from "@/models/Resource"
 import dbConnect from "../dbConnect"
-import { IactionResonse, IdeleteDetail, ItransferDetail, resourceDocument } from "../types/tree"
+import { IactionResonse, IdeleteDetail, IsafePasteResponse, ItransferData, resourceDocument } from "../types/tree"
 import { revalidatePath } from "next/cache"
 import path from 'path'
 import { IResource } from '../types/model'
+import { IDublicateDetails } from '../types/context'
 
 export const RenameFileName = async (prevState: never, formData: FormData): Promise<IactionResonse> => {
     try {
         const id = formData.get('fileId') as string
         const name = formData.get('name') as string
+        const parentId = formData.get('parentId') as string
 
-        if (!id || !name) return { success: false, msg: "All fields are required" }
+        if (!id || !name || !parentId) return { success: false, msg: "All fields are required" }
         await dbConnect()
 
+        const isAlreadyNameExists = await Resource.find({ name, parent: { $in: parentId } })
+        if (isAlreadyNameExists.length) {
+            return {
+                success: false,
+                msg: `${name} is already exist in this directory`
+            }
+        }
+
         const oldDocument: IResource | null = await Resource.findById(id)
-        // const resource: IResource | null = await Resource.findByIdAndUpdate(id, { $set: { name } }, { new: true })
         if (!oldDocument) {
             return {
                 success: false,
@@ -53,23 +62,23 @@ export const RenameFileName = async (prevState: never, formData: FormData): Prom
     }
 }
 
-export const TransferFile = async (transferDetail: ItransferDetail): Promise<IactionResonse> => {
+export const TransferFile = async (transferDetail: ItransferData): Promise<IactionResonse> => {
     // await new Promise((res) => setTimeout(() => res(3), 3000))
 
     try {
-        const { child, newParent, oldParent, method } = transferDetail
-        if (!child || !newParent || !oldParent || !method) return { success: false, msg: "Resource not provided" }
+        const { childId, newParent, oldParent, method } = transferDetail
+        if (!childId || !newParent || !oldParent || !method) return { success: false, msg: "Resource not provided" }
 
-        await dbConnect()
+        // await dbConnect()
 
         if (method === 'cut') {
-            await Resource.findByIdAndUpdate(child, { $pull: { parent: oldParent } }, { new: true })
-            await Resource.findByIdAndUpdate(oldParent, { $pull: { child } }, { new: true })
-            await Resource.findByIdAndUpdate(child, { $push: { parent: newParent } }, { new: true })
-            await Resource.findByIdAndUpdate(newParent, { $push: { child } }, { new: true })
+            await Resource.findByIdAndUpdate(childId, { $pull: { parent: oldParent } }, { new: true })
+            await Resource.findByIdAndUpdate(oldParent, { $pull: { childId } }, { new: true })
+            await Resource.findByIdAndUpdate(childId, { $push: { parent: newParent } }, { new: true })
+            await Resource.findByIdAndUpdate(newParent, { $push: { childId } }, { new: true })
         }
         else {
-            const mainFile = await Resource.findById(child) as IResource
+            const mainFile = await Resource.findById(childId) as IResource
             let copyFileData: IResource = {
                 name: mainFile.name,
                 contentType: mainFile.contentType,
@@ -88,7 +97,7 @@ export const TransferFile = async (transferDetail: ItransferDetail): Promise<Iac
             const copyFile = await new Resource(copyFileData).save()
 
             if (copyFile.child && copyFile.child.length) {
-                await Resource.findOneAndUpdate({ parent: { $in: child } }, { $push: { parent: copyFile._id } }, { new: true })
+                await Resource.findOneAndUpdate({ parent: { $in: childId } }, { $push: { parent: copyFile._id } }, { new: true })
             }
             await Resource.findByIdAndUpdate(newParent, { $push: { child: copyFile._id } }, { new: true })
         }
@@ -158,5 +167,65 @@ export const DeleteFile = async (deleteDetail: IdeleteDetail): Promise<IactionRe
             msg: 'server error'
         }
 
+    }
+}
+
+export const checkDuplicatePaste = async (transferDetail: ItransferData): Promise<IsafePasteResponse> => {
+    try {
+        const { childId, childName, newParent, oldParent, method } = transferDetail
+        if (!childId || !childName || !newParent || !oldParent || !method) return { success: false, msg: "Resource not provided" }
+
+        const isAlreadyNameExists = await Resource.find({ name: childName, parent: { $in: newParent } })
+        if (isAlreadyNameExists.length) {
+            console.log('inds')
+            let existingDetail: IResource = isAlreadyNameExists[0]
+            return {
+                success: false,
+                msg: `This Destination Already contents a ${existingDetail.contentType} with ${childName} name`,
+                isDuplicateExist: true,
+                existingDetail,
+                providedDetail: transferDetail
+            }
+        }
+
+        return TransferFile(transferDetail)
+    }
+    catch (error) {
+        console.log(error)
+        return {
+            success: false,
+            msg: 'Server Error!'
+        }
+    }
+}
+
+export const ReplaceFile = async (allowDublicateDetail: IDublicateDetails): Promise<IactionResonse> => {
+    try {
+        const { existingDetail, providedDetail } = allowDublicateDetail
+        const deleteDetail = {
+            file: existingDetail,
+            parentId: providedDetail.newParent as string
+        }
+        const deleteReturn = await DeleteFile(deleteDetail)
+        const transReturn = await TransferFile(providedDetail)
+
+        console.log({ deleteReturn, transReturn })
+        if (!deleteReturn.success && !transReturn.success) {
+            return {
+                success: false,
+                msg: "Error in replacing resources"
+            }
+        }
+        return {
+            success: true,
+            msg: "Item replaced"
+        }
+
+    } catch (error) {
+        console.log(error)
+        return {
+            success: false,
+            msg: "Server error!"
+        }
     }
 }

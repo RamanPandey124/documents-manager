@@ -1,3 +1,6 @@
+import { ITransferDetail } from "./context";
+import { IResource } from "./model";
+
 export interface InputProps {
     name: string;
     label?: string;
@@ -62,8 +65,17 @@ export interface IactionResonse {
     msg: string
 }
 
-export interface ItransferDetail {
-    child: string | undefined;
+export interface IsafePasteResponse {
+    success: boolean,
+    msg: string
+    isDuplicateExist?: boolean;
+    existingDetail?: IResource;
+    providedDetail?: ItransferData
+}
+
+export interface ItransferData {
+    childId: string | undefined;
+    childName: string | undefined;
     oldParent: string | undefined;
     newParent: string | null;
     method: "copy" | "cut" | undefined;

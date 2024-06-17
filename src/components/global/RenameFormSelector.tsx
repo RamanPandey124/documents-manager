@@ -17,21 +17,25 @@ export default function RenameFormSelector() {
 
     return (
         <Modal isModal={state.isRename} handleModal={() => dispatch({ type: 'CANCEL_MODAL' })}>
-            <RenameFormModal file={state.renameData} handleModal={() => dispatch({ type: 'CANCEL_MODAL' })} />
+            <RenameFormModal file={state.renameData} parentId={state.currentParent} handleModal={() => dispatch({ type: 'CANCEL_MODAL' })} />
         </Modal>
     )
 }
 
-function RenameFormModal({ file, handleModal }: { file: resourceDocument, handleModal: () => void }) {
+function RenameFormModal({ file, parentId, handleModal }: { file: resourceDocument, handleModal: () => void, parentId: string | null }) {
     const [formState, formAction] = useFormState(RenameFileName, {})
     if (formState.success) {
         handleModal()
+    }
+    if (!file || !parentId) {
+        return null
     }
 
     return (
         <div className="space-y-4">
             <h1 className="text-2xl text-blue-500">Rename</h1>
             <form action={formAction} className="flex flex-col items-end space-y-2">
+                <InputBox name="parentId" type="hidden" value={parentId} />
                 <InputBox name="fileId" type="hidden" value={file._id} />
                 <InputBox name="name" type="text" defaultValue={file.name} focus />
                 <SubmitBtn title="Rename" />

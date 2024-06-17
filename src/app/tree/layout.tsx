@@ -6,7 +6,7 @@ import CounterProvider from "@/context/CounterContext";
 export default function RootLayout({
     children,
 }: {
-    children: React.ReactNode;n
+    children: React.ReactNode;
 }) {
     return (
         <div className="flex flex-col h-screen">

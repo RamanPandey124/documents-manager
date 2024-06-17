@@ -1,11 +1,17 @@
-import { resourceDocument } from "./tree";
+import { IResource } from "./model";
+import { ItransferData, resourceDocument } from "./tree";
 
 export interface ITransferDetail {
     oldParent?: string;
-    newParent: string;
-    fileID: string
+    fileID: string;
+    fileName: string
 }
 
+export interface IDublicateDetails {
+    msg: string;
+    existingDetail: IResource;
+    providedDetail: ItransferData
+}
 export interface State {
     path: Array<resourceDocument>;
     parent: {};
@@ -16,7 +22,9 @@ export interface State {
     Transfermethod?: "cut" | "copy";
     transferDetail?: ITransferDetail;
     isDelete: boolean;
-    deleteDetail?: IDeletePayload
+    deleteDetail?: IDeletePayload,
+    isDublicateExist: boolean,
+    DublicateDetails?: IDublicateDetails
 }
 
 export interface ItransferPayload {
@@ -30,6 +38,7 @@ export interface IDeletePayload {
     parentId: string
 }
 
+
 export type Action =
     | { type: 'PATH', payload: resourceDocument }
     | { type: 'RENAME'; payload: resourceDocument }
@@ -37,4 +46,5 @@ export type Action =
     | { type: 'TRANSFER'; payload: ItransferPayload }
     | { type: 'END_TRANSFER'; }
     | { type: 'DELETE'; payload: IDeletePayload }
+    | { type: 'DUBLICATE_PASTE'; payload: IDublicateDetails }
 
