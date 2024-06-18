@@ -20,7 +20,6 @@ export async function GET(request: NextRequest) {
             },
         });
     } catch (error) {
-        console.error(error);
         return new Response('Error downloading file', { status: 500 });
     }
 }

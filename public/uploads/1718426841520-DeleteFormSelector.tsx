@@ -1,5 +1,6 @@
 "use client"
 
+
 import { CounterContext } from "@/context/CounterContext"
 import { useContext, useState } from "react"
 import Modal from "../reuseable/Modal"

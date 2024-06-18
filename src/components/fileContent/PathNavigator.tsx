@@ -7,6 +7,9 @@ import { MdOutlineNavigateNext } from "react-icons/md";
 import { FaPaste } from "react-icons/fa6";
 import { TransferFile, checkDuplicatePaste } from "@/lib/actions/fileOptionsActions";
 import { GrClear } from "react-icons/gr";
+import { toast } from 'react-hot-toast';
+import { resourceDocument } from "@/lib/types/tree";
+
 
 export default function PathNavigator() {
     const { state, dispatch } = use(CounterContext)
@@ -33,7 +36,7 @@ export default function PathNavigator() {
             dispatch({ type: "DUBLICATE_PASTE", payload: dublicateDetail })
         }
         else if (!success) {
-
+            toast.error(msg)
         }
         else {
             dispatch({ type: "END_TRANSFER" })
@@ -70,13 +73,7 @@ export default function PathNavigator() {
             </div>
 
             <div className="mx-4 flex space-x-4 items-center">
-                {path.length > 1 &&
-                    <div>
-                        <Link href={`/main/${path[path.length - 2]._id}`}>
-                            <FaArrowLeft className="hover:text-gray-400 h-5 w-5" />
-                        </Link>
-                    </div>
-                }
+                {path.length > 1 && <ReturnPath path={path} />}
 
                 <div>
                     {path?.map((item, index) => {
@@ -92,5 +89,16 @@ export default function PathNavigator() {
                 </div>
             </div>
         </>
+    )
+}
+
+function ReturnPath({ path }: { path: resourceDocument[] }) {
+    const link = path[path.length - 2]
+    const route = link.contentType === 'file' ? "blob" : "main"
+
+    return (
+        <Link href={`/${route}/${link._id}`}>
+            <FaArrowLeft className="hover:text-gray-400 h-5 w-5" />
+        </Link>
     )
 }

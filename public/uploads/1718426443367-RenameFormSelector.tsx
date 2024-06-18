@@ -1,5 +1,4 @@
 "use client"
-component-rename
 import { CounterContext } from "@/context/CounterContext"
 import { useContext } from "react"
 import Modal from "../reuseable/Modal"

@@ -5,7 +5,7 @@ import CounterProvider from "@/context/CounterContext";
 import Global from "@/components/global/Global";
 import ResourceFormSelector from "@/components/newResources/ResourceFormSelector";
 import PathNavigator from "@/components/fileContent/PathNavigator";
-
+import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Toaster position="bottom-right" />
         <div className="flex flex-col h-screen">
           <CounterProvider>
             <Global />

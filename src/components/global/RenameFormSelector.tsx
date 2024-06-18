@@ -13,7 +13,7 @@ import { RenameFileName } from "@/lib/actions/fileOptionsActions"
 export default function RenameFormSelector() {
     const { state, dispatch } = useContext(CounterContext)
 
-    if (!state.isRename || !state.renameData) return null
+    if (!state.isRename || !state.renameData || !state.currentParent) return null
 
     return (
         <Modal isModal={state.isRename} handleModal={() => dispatch({ type: 'CANCEL_MODAL' })}>
@@ -22,13 +22,10 @@ export default function RenameFormSelector() {
     )
 }
 
-function RenameFormModal({ file, parentId, handleModal }: { file: resourceDocument, handleModal: () => void, parentId: string | null }) {
+function RenameFormModal({ file, parentId, handleModal }: { file: resourceDocument, handleModal: () => void, parentId: string }) {
     const [formState, formAction] = useFormState(RenameFileName, {})
     if (formState.success) {
         handleModal()
-    }
-    if (!file || !parentId) {
-        return null
     }
 
     return (

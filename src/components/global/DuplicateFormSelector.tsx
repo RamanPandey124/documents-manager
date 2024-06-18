@@ -4,12 +4,9 @@
 import { CounterContext } from "@/context/CounterContext"
 import { useContext, useState } from "react"
 import Modal from "../reuseable/Modal"
-import InputBox from "../reuseable/InputBox"
-import SubmitBtn from "../reuseable/SubmitBtn"
-import { useFormState } from "react-dom"
-import { resourceDocument } from "@/lib/types/tree"
-import { IDeletePayload, IDublicateDetails } from "@/lib/types/context"
-import { DeleteFile, ReplaceFile } from "@/lib/actions/fileOptionsActions"
+import { IDublicateDetails } from "@/lib/types/context"
+import { ReplaceFile } from "@/lib/actions/fileOptionsActions"
+import toast from "react-hot-toast"
 
 
 export default function DuplicateFormSelector() {
@@ -30,15 +27,18 @@ export default function DuplicateFormSelector() {
 
 function DuplicateFormModal({ payload, handleCancel }: { payload: IDublicateDetails, handleCancel: () => void }) {
     const [loading, setLoading] = useState(false)
-    const [errorMessage, setError] = useState('')
+    const [errorMessage, setError] = useState<string | undefined>()
 
     const handleDuplicateTransfer = async () => {
         setLoading(true)
         const { success, msg } = await ReplaceFile(payload)
         if (!success) {
             setError(msg)
+            toast.error(msg)
         }
-        handleCancel()
+        else {
+            handleCancel()
+        }
         setLoading(false)
     }
 
@@ -52,9 +52,11 @@ function DuplicateFormModal({ payload, handleCancel }: { payload: IDublicateDeta
 
             <div className="flex space-x-3 justify-end">
                 <button
+                    disabled={loading}
                     onClick={handleCancel}
                     className=" p-1 rounded-md bg-slate-700 hover:bg-slate-400">Cancel</button>
                 <button
+                    disabled={loading}
                     onClick={handleDuplicateTransfer}
                     className=" p-1 rounded-md bg-red-700 hover:bg-red-400">{loading ? 'replacing...' : "replace"}</button>
             </div>

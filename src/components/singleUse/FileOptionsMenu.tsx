@@ -35,6 +35,8 @@ export default function FileOptionsMenu({ file }: { file: resourceDocument }) {
 
     ]
 
+    if (!state.currentParent) return null
+
     return (
         <div className="relative group/feature z-10">
             <RxDragHandleDots2 />

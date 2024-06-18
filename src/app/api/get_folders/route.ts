@@ -7,7 +7,6 @@ import { type NextRequest } from 'next/server'
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const parentId = searchParams.get('parent')
-
     try {
         await dbConnect()
         const folders: resourceDocument[] = await Resource

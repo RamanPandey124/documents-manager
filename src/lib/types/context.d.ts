@@ -14,8 +14,7 @@ export interface IDublicateDetails {
 }
 export interface State {
     path: Array<resourceDocument>;
-    parent: {};
-    currentParent: string | null;
+    currentParent: string | undefined;
     isRename: boolean;
     renameData?: resourceDocument;
     isTransfer: boolean;

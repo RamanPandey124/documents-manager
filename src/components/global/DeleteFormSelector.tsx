@@ -3,12 +3,9 @@
 import { CounterContext } from "@/context/CounterContext"
 import { useContext, useState } from "react"
 import Modal from "../reuseable/Modal"
-import InputBox from "../reuseable/InputBox"
-import SubmitBtn from "../reuseable/SubmitBtn"
-import { useFormState } from "react-dom"
-import { resourceDocument } from "@/lib/types/tree"
 import { IDeletePayload } from "@/lib/types/context"
 import { DeleteFile } from "@/lib/actions/fileOptionsActions"
+import toast from "react-hot-toast"
 
 
 export default function DeleteFormSelector() {
@@ -25,11 +22,15 @@ export default function DeleteFormSelector() {
 
 function DeleteFormModal({ payload, handleModal }: { payload: IDeletePayload, handleModal: () => void }) {
     const [loading, setLoading] = useState(false)
-    const { file, parentId } = payload
+    const { file } = payload
+
     const handleDelete = async () => {
         setLoading(true)
         const { success, msg } = await DeleteFile(payload)
-        if (success) {
+        if (!success) {
+            toast.error(msg)
+        }
+        else {
             handleModal()
         }
         setLoading(false)
@@ -44,9 +45,11 @@ function DeleteFormModal({ payload, handleModal }: { payload: IDeletePayload, ha
 
             <div className="flex space-x-3 justify-end">
                 <button
+                    disabled={loading}
                     onClick={handleModal}
                     className=" p-1 rounded-md bg-slate-700 hover:bg-slate-400">Cancel</button>
                 <button
+                    disabled={loading}
                     onClick={handleDelete}
                     className=" p-1 rounded-md bg-red-700 hover:bg-red-400">{loading ? 'deleting...' : "delete"}</button>
             </div>

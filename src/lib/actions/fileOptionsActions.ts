@@ -160,10 +160,9 @@ export const DeleteFile = async (deleteDetail: IdeleteDetail): Promise<IactionRe
 
     }
     catch (error) {
-        console.log(error)
         return {
             success: false,
-            msg: 'server error'
+            msg: 'Server error!'
         }
 
     }
@@ -190,7 +189,6 @@ export const checkDuplicatePaste = async (transferDetail: ItransferData): Promis
         return TransferFile(transferDetail)
     }
     catch (error) {
-        console.log(error)
         return {
             success: false,
             msg: 'Server Error!'

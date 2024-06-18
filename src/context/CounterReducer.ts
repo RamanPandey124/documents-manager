@@ -3,8 +3,7 @@ import { Action, State } from "@/lib/types/context";
 
 export const initialState: State = {
     path: [],
-    parent: {},
-    currentParent: null,
+    currentParent: undefined,
     isRename: false,
     isDelete: false,
     isTransfer: false,

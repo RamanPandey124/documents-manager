@@ -12,7 +12,6 @@ import { convert } from "@/lib/handlers/TimeFormat";
 
 export default function FileEditor({ file, content }: { file: resourceDocument, content: string }) {
     const [value, setValue] = useState(content)
-    console.log(file)
 
     const [state, handleForm] = useFormState(updateFileContent, {})
 
@@ -21,8 +20,8 @@ export default function FileEditor({ file, content }: { file: resourceDocument, 
             <div className=" p-4 flex justify-between">
                 <div>
                     <h1 className="text-2xl text-yellow-400 mb-4"> {file.name}</h1>
-                    <p className="text-sm text-pink-200">Created: {convert(file.createdAt.toString(), true)}</p>
-                    <p className="text-sm text-pink-200">Last modified: {convert(file.updatedAt.toString(), true)}</p>
+                    <p className="text-sm text-pink-200" suppressHydrationWarning>Created: {convert(file.createdAt.toString(), true)}</p>
+                    <p className="text-sm text-pink-200" suppressHydrationWarning>Last modified: {convert(file.updatedAt.toString(), true)}</p>
                 </div>
                 <div>
                     <DownloadButton filePath={file.filePath} />

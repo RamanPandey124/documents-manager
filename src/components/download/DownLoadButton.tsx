@@ -1,5 +1,6 @@
 
 import { useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 import { FiDownload } from "react-icons/fi"
 
 export function DownloadButton({ filePath }: { filePath: string | undefined }) {
@@ -10,7 +11,7 @@ export function DownloadButton({ filePath }: { filePath: string | undefined }) {
         const response = await fetch(`http://localhost:3000/api/download?path=${filePath}`);
         const blob = await response.blob();
         if (!response.ok) {
-            console.log('error')
+            toast.error(response.statusText)
         }
         else {
             const url = window.URL.createObjectURL(blob);

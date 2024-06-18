@@ -36,8 +36,12 @@ export default function FolderSelector({ handleFolder }: { handleFolder: (id: st
 
         const resonse = await fetch(`http://localhost:3000/api/get_folders?parent=${_id}`)
         const result: getFolderResponseType = await resonse.json()
-
-        if (result.success) {
+        if (!result.success) {
+            setPathTracker(intialPathTracker)
+            setCurrent([])
+            handleFolder(rootFolder._id)
+        }
+        else {
             if (isTrack) {
                 setPathTracker({
                     names: [...pathTracker.names, name],
@@ -64,7 +68,7 @@ export default function FolderSelector({ handleFolder }: { handleFolder: (id: st
                 <div className="flex">
                     {currentfolder?.map((folder) => {
                         return (
-                            <div
+                            <div key={folder._id}
                                 onClick={() => getNewFolders(folder, true)}
                                 className=" hover:bg-gray-500 mx-2 text-center first:rounded-md cursor-pointer">
                                 <IoFolder className="h-7 w-7 mx-auto" />
